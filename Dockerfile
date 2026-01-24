@@ -18,7 +18,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copy the jar from the build stage
-COPY --from=build /app/target/employee-management-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/medi-report-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your app will listen on INSIDE the container
 EXPOSE 8080
