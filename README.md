@@ -1,6 +1,7 @@
 # MediReport - Medical Records Management System
 
 A role-based medical records management system built with Spring Boot and PostgreSQL for managing hospital patients and medical documents.
+Live URL : https://medi-report-frontend-l4yqwl2vy-maheshkakarla2003s-projects.vercel.app/login.html
 
 ## Features
 
@@ -17,6 +18,11 @@ A role-based medical records management system built with Spring Boot and Postgr
 - **Database**: PostgreSQL
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Deployment**: Docker, Render
+<img width="1292" height="700" alt="Screenshot 2026-01-24 123128" src="https://github.com/user-attachments/assets/673f81de-4bc9-4e18-9846-949a89a8e7de" />
+<img width="1292" height="700" alt="Screenshot 2026-01-24 123401" src="https://github.com/user-attachments/assets/ce95fcb0-b08c-421c-b6b1-3da74fa39f00" />
+<img width="1292" height="700" alt="Screenshot 2026-01-24 123628" src="https://github.com/user-attachments/assets/c310986b-3676-42dd-866f-7844920737fd" />
+
+
 
 ## Quick Start
 
@@ -129,8 +135,6 @@ docker run -d -e DB_URL=jdbc:postgresql://db:5432/medi_report \
 ✓ Web dashboard for managing medical records
 
 ## Support
-
-- **Swagger UI**: http://localhost:8080/swagger-ui.html
 - **Issues**: Report on GitHub Issues
 - **Email**: support@medi-report.com
 
