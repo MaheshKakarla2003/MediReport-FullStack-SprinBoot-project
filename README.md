@@ -1,141 +1,61 @@
 # MediReport - Medical Records Management System
 
-A role-based medical records management system built with Spring Boot and PostgreSQL for managing hospital patients and medical documents.
-Live URL : https://medi-report-frontend-l4yqwl2vy-maheshkakarla2003s-projects.vercel.app/login.html
+A Spring Boot medical records app with JWT authentication, role-based authorization, and hospital patient management.
+Live URL: https://medi-report-frontend-l4yqwl2vy-maheshkakarla2003s-projects.vercel.app/login.html
 
-## Features
+## What’s included
 
-- **2 User Roles**: Hospital (provider) and Customer (patient) with separate access
-- **Patient Management**: Create, update, and manage patient records
-- **Medical Visits**: Document patient visits with diagnosis and treatment
-- **Document Upload**: Secure upload and storage of medical files
-- **Multi-Hospital Support**: Manage multiple hospitals in a single system
-- **RESTful APIs**: Easy integration with frontend applications
+- JWT-based login and security with Spring Security
+- Role-based access using granted authorities
+- Hospital and customer user roles
+- Patient record management, visit logging, and document upload
+- Hospital dashboard with pagination and search for patient data
+- RESTful APIs for easy frontend integration
 
-## Tech Stack
+## Tech stack
 
-- **Backend**: Spring Boot 3.5.7 (Java 17)
-- **Database**: PostgreSQL
-- **Frontend**: HTML5, CSS3, JavaScript
-- **Deployment**: Docker, Render
-<img width="1292" height="700" alt="Screenshot 2026-01-24 123128" src="https://github.com/user-attachments/assets/673f81de-4bc9-4e18-9846-949a89a8e7de" />
-<img width="1292" height="700" alt="Screenshot 2026-01-24 123401" src="https://github.com/user-attachments/assets/ce95fcb0-b08c-421c-b6b1-3da74fa39f00" />
-<img width="1292" height="700" alt="Screenshot 2026-01-24 123628" src="https://github.com/user-attachments/assets/c310986b-3676-42dd-866f-7844920737fd" />
-
-
-
-## Quick Start
-
-### Prerequisites
-
-- Java 17+
-- Maven 3.9.9+
+- Java 17
+- Spring Boot 3.x
+- Spring Security
+- Maven 3.9+
 - PostgreSQL 12+
+- Docker
+- Render
 
-### Installation
+## Quick start
 
 ```bash
-# Clone and install
 git clone <your-repo>
 cd medi-report
 mvn clean install
-
-# Create database
-createdb medi_report
-
-# Set environment variables
-export DB_URL=jdbc:postgresql://localhost:5432/medi_report
-export DB_USER=postgres
-export DB_PASSWORD=your_password
-export PORT=8080
-
-# Run
 mvn spring-boot:run
 ```
 
-Access at: `http://localhost:8080/swagger-ui.html`
+Set database config in `application.properties` or environment variables.
 
-## API Overview
+## Core APIs
 
-### Main Endpoints
-
-**User Management**
-
+- `POST /api/login` - Authenticate and get JWT token
 - `POST /api/register-hospital` - Register hospital
 - `POST /api/register-customer` - Register customer
-
-**Patients & Records**
-
+- `GET /api/patients` - List patients (supports pagination + search)
 - `POST /api/patients` - Create patient
-- `GET /api/patients/{id}` - Get patient details
-- `POST /api/visits` - Record a visit
-- `POST /api/documents/upload` - Upload document
+- `POST /api/visits` - Add patient visit
+- `POST /api/documents/upload` - Upload medical document
 
-## Example Usage
+## Notes
 
-### Register Hospital
+- Hospital users can manage patients and view dashboard data
+- Customer users can access allowed records based on roles
+- Pagination and search are available for hospital patient lists
 
-```bash
-curl -X POST http://localhost:8080/api/register-hospital \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "admin@hospital.com",
-    "password": "SecurePass123",
-    "hospitalName": "City Hospital",
-    "registrationNumber": "REG12345",
-    "city": "New York",
-    "state": "NY"
-  }'
-```
-
-### Create Patient
+## Docker
 
 ```bash
-curl -X POST http://localhost:8080/api/patients \
-  -H "Content-Type: application/json" \
-  -d '{
-    "fullName": "John Doe",
-    "phoneNumber": "+1-555-9876",
-    "age": 35,
-    "gender": "Male",
-    "hospitalId": 1
-  }'
+docker build -t medi-report .
+docker run -p 8080:8080 -e DB_URL=jdbc:postgresql://localhost:5432/medi_report -e DB_USER=postgres -e DB_PASSWORD=your_password medi-report
 ```
-
-## How It Works
-
-1. **Hospital** registers in the system
-2. **Add patients** to the hospital database
-3. **Record visits** for patients with diagnosis
-4. **Upload documents** (reports, prescriptions, etc.)
-5. **Customers** can view their records and download files
-
-## Deployment
-
-### Docker
-
-```bash
-docker build -t medi-report:1.0 .
-docker run -d -e DB_URL=jdbc:postgresql://db:5432/medi_report \
-  -e DB_USER=postgres -e DB_PASSWORD=pwd \
-  -p 8080:8080 medi-report:1.0
-```
-
-### Render
-
-1. Create PostgreSQL database on Render
-2. Create Web Service with GitHub repo
-3. Set environment variables (DB_URL, DB_USER, DB_PASSWORD)
-4. Deploy
-
-## Key Achievements
-
-✓ Role-based system with 2 user types (Hospital & Customer)  
-✓ RESTful APIs for all operations (Hospital, Patient, Visit, Document)  
-✓ Web dashboard for managing medical records
 
 ## Support
-- **Issues**: Report on GitHub Issues
-- **Email**: support@medi-report.com
 
-**Version**: 1.0.0 | **Status**: Production Ready
+Open issues on GitHub for bugs or feature requests.
