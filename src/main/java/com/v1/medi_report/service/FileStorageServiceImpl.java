@@ -1,53 +1,60 @@
 package com.v1.medi_report.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.*;
+import com.v1.medi_report.exception.NotFoundException;
 
 @Service
-public class FileStorageServiceImpl  implements FileStorageService{
+public class FileStorageServiceImpl implements FileStorageService {
 
-	 @Value("${medireport.upload-dir}")
-	    private String uploadDir;
+	@Value("${medireport.upload-dir}")
+	private String uploadDir;
 
-	    // Store file on disk and return full file path
-	    public String storeFile(MultipartFile file) throws IOException {
+	// Store file on disk and return full file path
+	@Override
+	public String storeFile(MultipartFile file) throws IOException {
 
-	        if (file.isEmpty()) {
-	            throw new IllegalArgumentException("Uploaded file is empty");
-	        }
+		if (file.isEmpty()) {
+			throw new NotFoundException("Uploaded file is empty");
+		}
 
-	        Path uploadPath = Paths.get(uploadDir);
-	        if (!Files.exists(uploadPath)) {
-	            Files.createDirectories(uploadPath);
-	        }
+		Path uploadPath = Paths.get(uploadDir);
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
 
-	        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-	        String extension = "";
+		String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+		String extension = "";
 
-	        int dotIndex = originalFilename.lastIndexOf('.');
-	        if (dotIndex >= 0) {
-	            extension = originalFilename.substring(dotIndex);
-	        }
+		int dotIndex = originalFilename.lastIndexOf('.');
+		if (dotIndex >= 0) {
+			extension = originalFilename.substring(dotIndex);
+		}
 
-	        String storedFileName = "doc_" + System.currentTimeMillis() + extension;
-	        Path targetPath = uploadPath.resolve(storedFileName);
+		String storedFileName = "doc_" + System.currentTimeMillis() + extension;
+		Path targetPath = uploadPath.resolve(storedFileName);
 
-	        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-	        return targetPath.toString();
-	    }
+		return targetPath.toString();
+	}
 
-	    // Load file bytes from disk
-	    public byte[] loadFile(String filePath) throws IOException {
-	        Path path = Paths.get(filePath);
-	        if (!Files.exists(path)) {
-	            throw new IllegalArgumentException("File not found: " + filePath);
-	        }
-	        return Files.readAllBytes(path);
-}
+	// Load file bytes from disk
+	@Override
+	public byte[] loadFile(String filePath) throws IOException {
+		Path path = Paths.get(filePath);
+		if (!Files.exists(path)) {
+			throw new NotFoundException("File not found: " + filePath);
+		}
+		return Files.readAllBytes(path);
+	}
 }

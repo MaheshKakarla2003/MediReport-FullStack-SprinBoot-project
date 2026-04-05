@@ -1,6 +1,5 @@
 package com.v1.medi_report.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,65 +30,69 @@ import jakarta.validation.Valid;
 public class AppUsersController {
 
 	@Autowired
-	 private  AppUsersService appUserService;
+	private AppUsersService appUserService;
 
-	//   CREATING A HOSPITL WITH CREDENTIALS
-	 @PostMapping("/register-hospital")
-	    public ResponseEntity<HospitalResponse> registerHospital( @Valid  @ModelAttribute   HospitalRegistrationRequest request) {
+	// HEALTH CHECK ENDPOINT FOR MAKING THE SERVER AWAKE
+	@GetMapping("/health")
+	public String health() {
+		return "Application is running";
+	}
 
-	    	 HospitalResponse response=appUserService.registerHospital(request);
-	    	return ResponseEntity.status(HttpStatus.CREATED).body(response);
-	        
-	    }
-	    
-	 //   CREATING A CUSTOMER WITH CREDENTIALS
-	    @PostMapping("/register-customer")
-	    public ResponseEntity<CustomerResponse> registerCustomer( @Valid  @ModelAttribute   CustomerRegisterRequest request) {
+	// CREATING A HOSPITL WITH CREDENTIALS
+	@PostMapping("/register-hospital")
+	public ResponseEntity<HospitalResponse> registerHospital(
+			@Valid @ModelAttribute HospitalRegistrationRequest request) {
 
-	    	 CustomerResponse response=appUserService.registerCustomer(request);
-	    	return ResponseEntity.status(HttpStatus.CREATED).body(response);
-	        
-	    }
-	    
-	    // UPDATING A CUSTOMER WITH  DATA
-	    
-	    @PutMapping("/update-customer/{customerId}/{userId}")
-	    	public ResponseEntity<CustomerResponse> updateCustomer(   @PathVariable("customerId") long customerId , @PathVariable("userId") long userId ,
-	    			                                                                         @Valid  @RequestBody CustomerUpdateRequest request) {
+		HospitalResponse response = appUserService.registerHospital(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
-		    	 CustomerResponse response=appUserService.updateCustomer(customerId , userId,request);
-		    	return ResponseEntity.status(HttpStatus.CREATED).body(response);
-		        
-		    }
-	    
-	    // UPDATING A HOSPITAL WITH  DATA
-	    
-	    @PutMapping("/update-hospital/{hospitalId}/{userId}")
-    	public ResponseEntity<HospitalResponse> updateHospital(   @PathVariable("hospitalId") long hospitalId , @PathVariable("userId") long userId ,
-    			                                                                         @Valid  @RequestBody HospitalUpdateRequest request) {
+	}
 
-	    	HospitalResponse response=appUserService.updateHospital(hospitalId , userId,request);
-	    	return ResponseEntity.status(HttpStatus.CREATED).body(response);
-	        
-	    }
-	
-	    // TRY TO LOG IN WITH CREDENTIALS
-	  @GetMapping("/login")
-	  public   ResponseEntity<AppUserResponse>  login(@RequestParam String username , @RequestParam  String password ) {
-		  AppUserResponse user=  appUserService.login(username, password);
-		  
-	  	          return ResponseEntity.ok(user);
-	  }
-	  
-	  // DELETE A USER ACCOUNT EITHER A HOSPITAL OR CUSTOMER
-	  @DeleteMapping("/{id}")
-	  public   ResponseEntity<String>  deleteUserAccount(@PathVariable long id) {
-		          String res= appUserService.deleteUserAccount( id);
-		  
-	  	          return  ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
-	  }
-	  
-	  
-	
-	   
+	// CREATING A CUSTOMER WITH CREDENTIALS
+	@PostMapping("/register-customer")
+	public ResponseEntity<CustomerResponse> registerCustomer(@Valid @ModelAttribute CustomerRegisterRequest request) {
+
+		CustomerResponse response = appUserService.registerCustomer(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+	}
+
+	// UPDATING A CUSTOMER WITH DATA
+
+	@PutMapping("/customerRole/update-customer/{customerId}/{userId}")
+	public ResponseEntity<CustomerResponse> updateCustomer(@PathVariable("customerId") long customerId,
+			@PathVariable("userId") long userId, @Valid @RequestBody CustomerUpdateRequest request) {
+
+		CustomerResponse response = appUserService.updateCustomer(customerId, userId, request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+	}
+
+	// UPDATING A HOSPITAL WITH DATA
+
+	@PutMapping("/hospitalRole/update-hospital/{hospitalId}/{userId}")
+	public ResponseEntity<HospitalResponse> updateHospital(@PathVariable("hospitalId") long hospitalId,
+			@PathVariable("userId") long userId, @Valid @RequestBody HospitalUpdateRequest request) {
+
+		HospitalResponse response = appUserService.updateHospital(hospitalId, userId, request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+	}
+
+	// TRY TO LOG IN WITH CREDENTIALS
+	@GetMapping("/login")
+	public ResponseEntity<AppUserResponse> login(@RequestParam String username, @RequestParam String password) {
+		AppUserResponse user = appUserService.login(username, password);
+
+		return ResponseEntity.ok(user);
+	}
+
+	// DELETE A USER ACCOUNT EITHER A HOSPITAL OR CUSTOMER
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteUserAccount(@PathVariable long id) {
+		String res = appUserService.deleteUserAccount(id);
+
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
+	}
+
 }

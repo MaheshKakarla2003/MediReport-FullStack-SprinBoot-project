@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class HospitalResponse {
-	    private Long id;
-	    private String name;
-	    private String address;
-	    private String contactNumber;
-	    private String email;
-	    private boolean active;
+	private Long id;
+	private String name;
+	private String address;
+	private String contactNumber;
+	private String email;
+
 }

@@ -1,7 +1,5 @@
 package com.v1.medi_report.entity;
 
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -21,22 +19,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Hospital {
-	
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long id ;
-	@Column(nullable = false , unique=true)
-	private String name;
-	@Column(nullable = false , unique=true)
-	private  String email;
-	private String address;
-	@Column(nullable = false , unique=true)
-	private String contactNumber;
-	private boolean isActive;
 
-	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	@Column(nullable = false, unique = true)
+	private String name;
+	@Column(nullable = false, unique = true)
+	private String email;
+	private String address;
+	@Column(nullable = false, unique = true)
+	private String contactNumber;
 
 }

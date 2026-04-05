@@ -1,6 +1,5 @@
 package com.v1.medi_report.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,17 +11,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AppUserResponse {
 
-	 
-	
-        private Long id;
-        
-	    private String username; // This will be the email
-	    
-	    private String password;
+	private Long id;
 
-	    private String role; //  roles: HOSPITAL or CUSTOMER
+	private String username; // This will be the email
 
-	    private long hospitalId; 
+	private String password;
 
-	    private long customerId; 
+	private String role; // roles: HOSPITAL or CUSTOMER
+
+	private long hospitalId;
+
+	private long customerId;
+
+	private String jwtToken;
 }

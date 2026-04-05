@@ -16,92 +16,76 @@ import jakarta.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	  // 1) Validation errors on @Valid @RequestBody / @ModelAttribute
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+	// 1) Validation errors on @Valid @RequestBody / @ModelAttribute
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
 
-        List<FieldErrorDTO> fieldErrors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> FieldErrorDTO.builder()
-                        .field(error.getField())
-                        .message(error.getDefaultMessage())
-                        .build()
-                )
-                .collect(Collectors.toList());
+		List<FieldErrorDTO> fieldErrors = ex.getBindingResult().getFieldErrors().stream().map(
+				error -> FieldErrorDTO.builder().field(error.getField()).message(error.getDefaultMessage()).build())
+				.collect(Collectors.toList());
 
-        ApiErrorResponse body = ApiErrorResponse.builder()
-                .success(false)
-                .timestamp(LocalDateTime.now())
-                .errors(fieldErrors)
-                .build();
+		ApiErrorResponse body = ApiErrorResponse.builder().success(false).timestamp(LocalDateTime.now())
+				.errors(fieldErrors).build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+	}
 
-    // 2) Bean validation on path/query params (if @Validated at controller level)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
+	// 2) Bean validation on path/query params (if @Validated at controller level)
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<ApiErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
 
-        List<FieldErrorDTO> fieldErrors = ex.getConstraintViolations()
-                .stream()
-                .map(violation -> FieldErrorDTO.builder()
-                        .field(violation.getPropertyPath().toString())
-                        .message(violation.getMessage())
-                        .build()
-                )
-                .collect(Collectors.toList());
+		List<FieldErrorDTO> fieldErrors = ex
+				.getConstraintViolations().stream().map(violation -> FieldErrorDTO.builder()
+						.field(violation.getPropertyPath().toString()).message(violation.getMessage()).build())
+				.collect(Collectors.toList());
 
-        ApiErrorResponse body = ApiErrorResponse.builder()
-                .success(false)
-                .timestamp(LocalDateTime.now())
-                .errors(fieldErrors)
-                .build();
+		ApiErrorResponse body = ApiErrorResponse.builder().success(false).timestamp(LocalDateTime.now())
+				.errors(fieldErrors).build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+	}
 
-    // 3)  business logic errors (e.g., "Hospital not found", "Invalid patientId" etc.)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
+	// 3) business logic errors (e.g.,"Invalid patientId")
+	// etc.)
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ApiErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
 
-        ApiErrorResponse body = ApiErrorResponse.builder()
-                .success(false)
-                .message(ex.getMessage())
-                .timestamp(LocalDateTime.now())
-                .errors(null)
-                .build();
+		ApiErrorResponse body = ApiErrorResponse.builder().success(false).message(ex.getMessage())
+				.timestamp(LocalDateTime.now()).errors(null).build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+	}
 
-    // 4) Multipart / file upload issues
-    @ExceptionHandler(MultipartException.class)
-    public ResponseEntity<ApiErrorResponse> handleMultipartException(MultipartException ex) {
+	// 4) Multipart / file upload issues
+	@ExceptionHandler(MultipartException.class)
+	public ResponseEntity<ApiErrorResponse> handleMultipartException(MultipartException ex) {
 
-        ApiErrorResponse body = ApiErrorResponse.builder()
-                .success(false)
-                .message("Invalid file upload request: " + ex.getMessage())
-                .timestamp(LocalDateTime.now())
-                .errors(null)
-                .build();
+		ApiErrorResponse body = ApiErrorResponse.builder().success(false)
+				.message("Invalid file upload request: " + ex.getMessage()).timestamp(LocalDateTime.now()).errors(null)
+				.build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+	}
 
-    // 5) Catch-all (unexpected errors)
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGenericException(Exception ex) {
+	// 5) NOT FOUND EXCEPTION
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<ApiErrorResponse> handleNotFoundException(NotFoundException ex) {
 
-        ApiErrorResponse body = ApiErrorResponse.builder()
-                .success(false)
-                .message("An unexpected error occurred: " + ex.getMessage())
-                .timestamp(LocalDateTime.now())
-                .errors(null)
-                .build();
+		ApiErrorResponse body = ApiErrorResponse.builder().success(false).message(ex.getMessage())
+				.timestamp(LocalDateTime.now()).errors(null).build();
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
-    }
-	
-	
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+	}
+
+	// 6) Catch-all (unexpected errors)
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ApiErrorResponse> handleGenericException(Exception ex) {
+
+		ApiErrorResponse body = ApiErrorResponse.builder().success(false)
+				.message("An unexpected error occurred: " + ex.getMessage()).timestamp(LocalDateTime.now()).errors(null)
+				.build();
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+	}
+
 }

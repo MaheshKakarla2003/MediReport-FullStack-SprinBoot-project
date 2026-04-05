@@ -13,17 +13,17 @@ import com.v1.medi_report.service.CustomerService;
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
-	
+
 	@Autowired
 	private CustomerService customerServ;
-	
-	 //GETTING A PARTICULAR CUSTOMER BASED ON THE CUSTOMER ID
-    @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable Long id) {
-      
-    	CustomerResponse response =customerServ.getCustomerById(id);
-            return ResponseEntity.ok(response);
-        
-    }
+
+	// GETTING A PARTICULAR CUSTOMER BASED ON THE CUSTOMER ID
+	@GetMapping("/customerRole/{id}")
+	public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable Long id) {
+
+		CustomerResponse response = customerServ.getCustomerById(id);
+		return ResponseEntity.ok(response);
+
+	}
 
 }

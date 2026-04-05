@@ -14,7 +14,7 @@ public interface AppUsersService {
 
 	HospitalResponse registerHospital(HospitalRegistrationRequest request);
 
-	AppUserResponse  login(String username, String password);
+	AppUserResponse login(String username, String password);
 
 	CustomerResponse registerCustomer(@Valid CustomerRegisterRequest request);
 
