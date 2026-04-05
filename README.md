@@ -1,8 +1,8 @@
 # MediReport - Medical Records Management System
 
 A Spring Boot medical records app with JWT authentication, role-based authorization, and hospital patient management.
-Live URL: https://medi-report-frontend-l4yqwl2vy-maheshkakarla2003s-projects.vercel.app/login.html
-
+Live URL: [https://medi-report-frontend-l4yqwl2vy-maheshkakarla2003s-projects.vercel.app/login.html
+]
 ## What’s included
 
 - JWT-based login and security with Spring Security
